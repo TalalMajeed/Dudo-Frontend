@@ -1,8 +1,50 @@
-# React + Vite
+# Dudo - Team Management Platform
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A Team Management Platform designed with React & Powered by SpringBoot. This Repository contains the Frontend Part of this Project only.
 
-Currently, two official plugins are available:
+## Collaborators:
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+We are a group of computer science students at NUST University, and this repository is part of our End Semester DSA Project
+
+-   Talal Majeed - [GitHub](https://www.github.com/TalalMajeed)
+-   Ezn Zaidi - [GitHub](https://github.com/EznXadee)
+
+## Installation:
+
+To Install and run this project locally, consider the following set of steps:
+
+### Requirements:
+
+This project has the following software requirements:
+
+-   Node JS (LTS) v20.17.0 or above
+-   Yarn Package Manager
+
+### Local Setup:
+
+1. Clone the Repository:
+   `git clone git@github.com:TalalMajeed/Dudo-Frontend.git`
+
+2. Install Dependencies:
+   `yarn`
+
+3. Start the Vite Server:
+   `yarn dev`
+
+The Server will run at `http://localhost:5173` [or another Port]
+
+## Tech Stack:
+
+The Frontend Part of this Project is based on the following Tech Stack:
+
+-   Material UI
+-   Sass
+-   Redux
+-   ReactJS
+-   HTML / CSS
+-   JavaScript
+-   HTML 5 Canvas
+
+## Beta Testing:
+
+This project is currently under development. Bugs and Glitches may be expected.
