@@ -22,13 +22,13 @@ This project has the following software requirements:
 
 ### Local Setup:
 
-1. Clone the Repository:
+1. Clone the Repository:  
    `git clone git@github.com:TalalMajeed/Dudo-Frontend.git`
 
-2. Install Dependencies:
+2. Install Dependencies:  
    `yarn`
 
-3. Start the Vite Server:
+3. Start the Vite Server:  
    `yarn dev`
 
 The Server will run at `http://localhost:5173` [or another Port]
