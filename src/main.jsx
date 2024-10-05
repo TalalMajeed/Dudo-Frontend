@@ -6,28 +6,21 @@ import {
 } from "react-router-dom";
 
 import './global.scss'
-import { createTheme, ThemeProvider } from "@mui/material/styles";
 import store from './store';
 import Index from './pages/Index/index.jsx'
 import { Provider } from 'react-redux'
+import Panel from './pages/Panel/index.jsx'
 
-
-const { palette } = createTheme();
 const AppContext = React.createContext({});
-const theme = createTheme({
-    palette: {
-        primary: palette.augmentColor({
-            color: {
-                main: "#3eba7d",
-            },
-        }),
-    },
-});
 
 const router = createBrowserRouter([
     {
         path: "/",
         element: <Index />,
+    },
+    {
+        path: "/panel",
+        element: <Panel />,
     }
 ]);
 
@@ -36,9 +29,7 @@ const App = () => {
     return (
         <Provider store={store}>
             <AppContext.Provider value={{}}>
-                <ThemeProvider theme={theme}>
-                    <RouterProvider router={router} />
-                </ThemeProvider>
+                <RouterProvider router={router} />
             </AppContext.Provider>
         </Provider>
 

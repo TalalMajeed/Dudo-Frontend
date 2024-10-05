@@ -1,5 +1,5 @@
-import "./index.scss";
+import "./styles.scss";
 import Loader from "../../features/loader/loader";
 export default function Index() {
-    return <Loader type={""} width={"100svw"} height={"100svh"} />;
+    return <Loader type={"intro"} width={"100svw"} height={"100svh"} />;
 }
