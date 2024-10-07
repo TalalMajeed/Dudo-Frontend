@@ -21,6 +21,12 @@ const theme = createTheme({
             main: '#3f51b5',
         },
     },
+    typography: {
+        fontFamily: [
+            'Raleway',
+            'sans-serif',
+        ].join(','),
+    },
 });
 
 const router = createBrowserRouter([
