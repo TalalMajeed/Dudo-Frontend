@@ -1,6 +1,11 @@
+@import url("https://fonts.googleapis.com/css2?family=Raleway:ital,wght@0,100..900;1,100..900&display=swap");
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-$primary: #3eba7d;
+$primary-light: #7e60bf;
+$primary-dark: #433878;
+$secondary-light: #e4b1f0;
+$secondary-dark: #ffe1ff;
 $text: #333;
