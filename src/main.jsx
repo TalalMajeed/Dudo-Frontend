@@ -1,9 +1,10 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import ReactDOM from 'react-dom/client'
 import {
     createBrowserRouter,
     RouterProvider,
 } from "react-router-dom";
+import { createTheme, ThemeProvider } from '@mui/material/styles';
 
 import './global.scss'
 import store from './store';
@@ -13,6 +14,14 @@ import Panel from './pages/Panel/index.jsx'
 import Login from './pages/Login/index.jsx'
 
 const AppContext = React.createContext({});
+
+const theme = createTheme({
+    palette: {
+        primary: {
+            main: '#3f51b5',
+        },
+    },
+});
 
 const router = createBrowserRouter([
     {
@@ -29,18 +38,17 @@ const router = createBrowserRouter([
     }
 ]);
 
-
 const App = () => {
     return (
         <Provider store={store}>
             <AppContext.Provider value={{}}>
-                <RouterProvider router={router} />
+                <ThemeProvider theme={theme}>
+                    <RouterProvider router={router} />
+                </ThemeProvider>
             </AppContext.Provider>
         </Provider>
-
     )
 }
-
 
 ReactDOM.createRoot(document.getElementById('root')).render(
     <App />
