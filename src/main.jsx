@@ -10,6 +10,7 @@ import store from './store';
 import Index from './pages/Index/index.jsx'
 import { Provider } from 'react-redux'
 import Panel from './pages/Panel/index.jsx'
+import Login from './pages/Login/index.jsx'
 
 const AppContext = React.createContext({});
 
@@ -21,6 +22,10 @@ const router = createBrowserRouter([
     {
         path: "/panel",
         element: <Panel />,
+    },
+    {
+        path: "/login",
+        element: <Login />,
     }
 ]);
 

@@ -1,7 +1,9 @@
+import "./styles.scss";
+
 export default function Panel() {
     return (
-        <div className="panel">
+        <main className="panel">
             <div>Coming Soon!!</div>
-        </div>
+        </main>
     );
 }
