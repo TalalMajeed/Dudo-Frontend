@@ -13,6 +13,7 @@ import { Provider } from 'react-redux'
 import Panel from './pages/Panel/index.jsx'
 import Login from './pages/Login/index.jsx'
 import Signup from './pages/Signup/index.jsx';
+import Verification from './pages/Verification/index.jsx';
 
 const AppContext = React.createContext({});
 
@@ -46,6 +47,10 @@ const router = createBrowserRouter([
     {
         path: "/signup",
         element: <Signup />,
+    },
+    {
+        path: "/verification",
+        element: <Verification />,
     }
 ]);
 
