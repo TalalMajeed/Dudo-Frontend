@@ -10,7 +10,7 @@ export default function Signup() {
         <div className="w-1/2 p-5 flex flex-col items-center mt-5">
           <div className="text-center w-[300px] ">
             <div className="flex flex-col items-center">
-            <img src={dudologo} alt="dudo-logo" className="h-20" />
+             <img src={dudologo} alt="dudo-logo" className="h-20" />
             </div>
             <div className="text-sm text-gray-400 mt-5 text-left">
               <label htmlFor="username" className="block text-[#4E2F7F] pl-2">Username</label>
