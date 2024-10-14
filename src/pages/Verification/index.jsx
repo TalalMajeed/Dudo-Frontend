@@ -22,7 +22,6 @@ export default function Verification() {
         </div>
 
         <div className="flex flex-col items-center">
-          <label htmlFor="otp" className="text-purple-800 mb-2">Enter OTP</label>
           <OTPInput
             value={otp}
             onChange={setOtp}
