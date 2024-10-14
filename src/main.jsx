@@ -12,6 +12,7 @@ import Index from './pages/Index/index.jsx'
 import { Provider } from 'react-redux'
 import Panel from './pages/Panel/index.jsx'
 import Login from './pages/Login/index.jsx'
+import Signup from './pages/Signup/index.jsx';
 
 const AppContext = React.createContext({});
 
@@ -41,6 +42,10 @@ const router = createBrowserRouter([
     {
         path: "/login",
         element: <Login />,
+    },
+    {
+        path: "/signup",
+        element: <Signup />,
     }
 ]);
 
