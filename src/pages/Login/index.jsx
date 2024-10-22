@@ -5,7 +5,7 @@ import dudologo from '../../assets/logo.png';
 
 export default function Login() {
     return (
-        <div className="h-screen bg-gradient-to-b from-[#B6A9E0] via-[#A286DD] to-[#4E2F7F] flex items-center justify-center">
+      <div className="h-screen bg-gradient-to-b from-[#B6A9E0] via-[#A286DD] to-[#4E2F7F] flex items-center justify-center">
       <div className="bg-white w-[1000px] h-[600px] flex">
         <div className="w-1/2 p-5 flex flex-col items-center mt-5">
           <div className="text-center w-[300px] ">
