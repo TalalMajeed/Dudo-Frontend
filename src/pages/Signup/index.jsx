@@ -1,75 +1,38 @@
-import "./styles.scss";
-import art2 from '../../assets/art2.png';
-import logo from '../../assets/googlelogo.png';
-import dudologo from '../../assets/logo.png';
-
-export default function Signup() {
+import SlidingButton from "../../features/loader/SlidingButton";
+function Signup() {
     return (
-        <div className="h-screen bg-gradient-to-b from-[#B6A9E0] via-[#A286DD] to-[#4E2F7F] flex items-center justify-center">
-      <div className="bg-white w-[1000px] h-[650px] flex">
-        <div className="w-1/2 p-5 flex flex-col items-center mt-5">
-          <div className="text-center w-[300px] ">
-            <div className="flex flex-col items-center">
-             <img src={dudologo} alt="dudo-logo" className="h-20" />
+        <div className="flex items-center justify-center min-h-screen ">
+            <div className="bg-[#2A2A40] p-8 rounded-lg shadow-lg w-full max-w-md">
+              <SlidingButton/>
+                <h1 className="text-3xl font-bold text-white mb-4">Create new account<span className="text-blue-500">.</span></h1>
+                <p className="text-gray-400 mb-6">Already A Member? <a href="#" className="text-blue-500">Log In</a></p>
+                <form>
+                    <div className="flex space-x-4 mb-4">
+                        <div className="relative flex-1">
+                            <input type="text" placeholder="First name" className="w-full p-3 bg-[#3B3B51] text-white rounded-lg focus:outline-none" />
+                            <i className="fas fa-user absolute right-3 top-3 text-gray-400"></i>
+                        </div>
+                        <div className="relative flex-1">
+                            <input type="text" placeholder="Last name" className="w-full p-3 bg-[#3B3B51] text-white rounded-lg focus:outline-none" />
+                            <i className="fas fa-user absolute right-3 top-3 text-gray-400"></i>
+                        </div>
+                    </div>
+                    <div className="relative mb-4">
+                        <input type="email" placeholder="Email" className="w-full p-3 bg-[#3B3B51] text-white rounded-lg focus:outline-none" />
+                        <i className="fas fa-envelope absolute right-3 top-3 text-gray-400"></i>
+                    </div>
+                    <div className="relative mb-6">
+                        <input type="password" placeholder="Password"  className="w-full p-3 bg-[#3B3B51] text-white rounded-lg focus:outline-none" />
+                        <i className="fas fa-lock absolute right-3 top-3 text-gray-400"></i>
+                    </div>
+                    <div className="flex space-x-4">
+                        <button type="button" className="flex-1 bg-gray-500 text-white py-3 rounded-lg">Change method</button>
+                        <button type="submit" className="flex-1 bg-blue-500 text-white py-3 rounded-lg">Create account</button>
+                    </div>
+                </form>
             </div>
-            <div className="text-sm text-gray-400 mt-5 text-left">
-              <label htmlFor="username" className="block text-[#4E2F7F] pl-2">Username</label>
-              <input 
-                id="username" 
-                type="text" 
-                defaultValue="David Brooks" 
-                className="w-full mt-1 p-2 border-b border-gray-300 outline-none" 
-              />
-            </div>
-
-            <div className="text-sm text-gray-400 mt-4 text-left">
-              <label htmlFor="password" className="block text-[#4E2F7F ] pl-2">Password</label>
-                                 
-
-              <input 
-                id="password" 
-                type="password" 
-                defaultValue="********" 
-                className="w-full mt-1 p-2 border-b border-gray-300 outline-none" 
-              />
-            </div>
-
-            <div className="text-sm text-gray-400 mt-5 text-left">
-              <label htmlFor="email" className="block text-[#4E2F7F] pl-2">Email</label>
-              <input 
-                id="email" 
-                type="text" 
-                defaultValue="johndoe@gmail.com" 
-                className="w-full mt-1 p-2 border-b border-gray-300 outline-none" 
-              />
-            </div>
-
-            <button className="w-4/5 h-10 bg-[#4E2F7F] text-white rounded-full mt-12 text-lg font-medium">
-              Sign Up
-            </button>
-
-            <div className="flex items-center my-6 space-x-2">
-              <div className="flex-1 border-b border-gray-300"></div>
-              <span className="text-sm text-gray-400">or</span>
-              <div className="flex-1 border-b border-gray-300"></div>
-            </div>
-
-            <div className="flex items-center justify-center space-x-2 cursor-pointer font-bold text-gray-700 mb-5">
-              <img src={logo} alt="Google logo" className="w-8" />
-              <span>Sign in with Google</span>
-            </div>
-
-            <div className="text-sm text-gray-400">
-                Already Have an Account?{" "}
-              <a href="/" className="text-[#4E2F7F]">Login</a>
-            </div>
-          </div>
         </div>
-
-        <div className="w-1/2 overflow-hidden">
-          <img src={art2} alt="art" className="w-full h-full object-cover" />
-        </div>
-      </div>
-    </div>
     );
 }
+
+export default Signup;
