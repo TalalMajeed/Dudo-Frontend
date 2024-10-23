@@ -15,6 +15,9 @@ import Login from './pages/Login/index.jsx'
 import Signup from './pages/Signup/index.jsx';
 import Verification from './pages/Verification/index.jsx';
 import TeamInfo from './pages/TeamInfo/index.jsx';
+import Customization from './pages/Index/Customization/index.jsx';
+
+
 const AppContext = React.createContext({});
 
 const theme = createTheme({
@@ -54,6 +57,10 @@ const router = createBrowserRouter([
     },
     { path:"/teaminfo",
         element: <TeamInfo />,
+    },
+    {
+        path: "/customization",
+        element: <Customization/>,
     }
 ]);
 
