@@ -14,7 +14,7 @@ import Panel from './pages/Panel/index.jsx'
 import Login from './pages/Login/index.jsx'
 import Signup from './pages/Signup/index.jsx';
 import Verification from './pages/Verification/index.jsx';
-
+import TeamInfo from './pages/TeamInfo/index.jsx';
 const AppContext = React.createContext({});
 
 const theme = createTheme({
@@ -51,6 +51,9 @@ const router = createBrowserRouter([
     {
         path: "/verification",
         element: <Verification />,
+    },
+    { path:"/teaminfo",
+        element: <TeamInfo />,
     }
 ]);
 

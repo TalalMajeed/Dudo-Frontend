@@ -1,62 +1,61 @@
 import "./styles.scss";
-import { useState } from 'react';
-import OTPInput from 'react-otp-input';
+import { useState } from "react";
+import OTPInput from "react-otp-input";
 import { Button } from "@mui/material";
+
 export default function Verification() {
-  const [otp, setOtp] = useState('');
+  const [otp, setOtp] = useState("");
 
   return (
-    <div className="h-screen bg-gradient-to-b from-[#B6A9E0] via-[#A286DD] to-[#4E2F7F] flex items-center justify-center">
-      <div className="bg-white p-10 rounded-md shadow-md w-[550px] h-[550px] flex flex-col justify-between">
-        <div className="flex flex-col items-center">
-          <h1 className="text-4xl font-bold text-gray-700 pt-4">Your OTP</h1>
-        </div>
-
-        <div className="text-center text-gray-600  mt-0 pt-0 ">
-          <p>Hey David,</p>
-          <p className="mt-4">
-            Thank you for choosing Dudo. Use the following OTP to complete the 
-            procedure to change your email address. OTP is valid for <b>5 minutes</b>. 
-            Do not share this code with others, including your Dudo collaborators.
-          </p>
-        </div>
-
-        <div className="flex flex-col items-center">
+    <div className="flex items-center justify-center min-h-screen bg-[#202124]">
+      <div className="bg-white p-12 rounded-xl shadow-lg max-w-md w-full">
+        <h1 className="text-5xl font-bold text-gray-800 mb-6 text-center">
+          Verify OTP<span className="text-blue-500">.</span>
+        </h1>
+        <p className="text-gray-600 text-center mb-8">
+          Hey David, <br />
+          Thank you for choosing Dudo. Use the following OTP to complete the
+          procedure to change your email address. The OTP is valid for <b>5 minutes</b>. Do not share this code with anyone.
+        </p>
+        <div className="flex justify-center mb-8">
           <OTPInput
             value={otp}
             onChange={setOtp}
             numInputs={5}
-            renderSeparator={() => <span className="px-1">-</span>}
+            renderSeparator={() => <span className="px-2">-</span>}
             renderInput={(props) => <input {...props} />}
             inputStyle={{
-              width: '2.5rem',
-              height: '2.5rem',
-              margin: '0.5rem',
-              fontSize: '1.5rem',
-              borderRadius: '0.375rem',
-              border: '1px solid #4E2F7F',
-              textAlign: 'center',
+              width: "3rem",
+              height: "3rem",
+              margin: "0.5rem",
+              fontSize: "1.5rem",
+              borderRadius: "0.375rem",
+              border: "1px solid #1E3A8A", 
+              textAlign: "center",
             }}
             focusStyle={{
-              border: '1px solid #4E2F7F',
-              outline: 'none',
+              border: "2px solid #1E40AF", 
+              outline: "none",
             }}
           />
         </div>
-    <div className="flex items-center justify-center">
-    <Button
-      variant="contained"
-      style={{
-        width: 250, 
-        color: '#FFFFFF', 
-        height: 45,
-        backgroundColor: '#4E2F7F', 
-      }}
-    >
-      Verify OTP
-    </Button>  
-    </div>
-     
+
+        <Button
+          variant="contained"
+          sx={{
+            width: "100%",
+            height: "50px",
+            background: "linear-gradient(to right, #ef4444, #ec4899)", 
+            color: "#FFFFFF",
+            fontSize: "1.2rem",
+            borderRadius: "0.5rem",
+            "&:hover": {
+              background: "linear-gradient(to right, #dc2626, #db2777)", 
+            },
+          }}
+        >
+          Verify OTP
+        </Button>
       </div>
     </div>
   );

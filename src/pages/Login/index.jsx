@@ -1,65 +1,76 @@
-import "./styles.scss";
-import art from '../../assets/art.png';
-import logo from '../../assets/googlelogo.png';
-import dudologo from '../../assets/logo.png';
+import { FaEnvelope, FaLock, FaGoogle } from 'react-icons/fa';
+import background from '../../assets/background.png';
 
-export default function Login() {
+function Login() {
     return (
-        <div className="h-screen bg-gradient-to-b from-[#B6A9E0] via-[#A286DD] to-[#4E2F7F] flex items-center justify-center">
-      <div className="bg-white w-[1000px] h-[600px] flex">
-        <div className="w-1/2 p-5 flex flex-col items-center mt-5">
-          <div className="text-center w-[300px] ">
-            <div className="flex flex-col items-center">
-            <img src={dudologo} alt="dudo-logo" className="h-20" />
-            </div>
-            <div className="text-sm text-gray-400 mt-5 text-left">
-              <label htmlFor="username" className="block text-[#4E2F7F] pl-2">Username</label>
-              <input 
-                id="username" 
-                type="text" 
-                defaultValue="David Brooks" 
-                className="w-full mt-1 p-2 border-b border-gray-300 outline-none" 
-              />
-            </div>
+        <div className="flex items-center justify-center min-h-screen bg-[#202124]">
+            <div className="bg-white p-12 rounded-xl shadow-lg max-w-5xl flex w-full">
+                <div className="flex-1 pr-10">
+                    <h1 className="text-5xl font-bold text-gray-800 mb-6">
+                        Log into an exsisting account<span className="text-blue-500">.</span>
+                    </h1>
+                    <p className="text-gray-600 mb-8">
+                        Dont have an account?{' '}
+                        <a href="#" className="text-blue-500 hover:underline">
+                            Sign up
+                        </a>
+                    </p>
 
-            <div className="text-sm text-gray-400 mt-4 text-left">
-              <label htmlFor="password" className="block text-[#4E2F7F ] pl-2">Password</label>
-                                 
+                    <form>
 
-              <input 
-                id="password" 
-                type="password" 
-                defaultValue="********" 
-                className="w-full mt-1 p-2 border-b border-gray-300 outline-none" 
-              />
+                        <div className="relative mb-6">
+                            <div className="flex items-center border border-gray-300 rounded-lg bg-white">
+                                <FaEnvelope className="text-gray-400 mx-3" />
+                                <input
+                                    type="email"
+                                    placeholder="Email"
+                                    className="w-full p-4 bg-white border-0 focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
+                                />
+                            </div>
+                        </div>
+
+                        <div className="relative mb-8">
+                            <div className="flex items-center border border-gray-300 rounded-lg bg-white">
+                                <FaLock className="text-gray-400 mx-3" />
+                                <input
+                                    type="password"
+                                    placeholder="Password"
+                                    className="w-full p-4 bg-white border-0 focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
+                                />
+                            </div>
+                        </div>
+
+                        <div className="mb-6">
+                            <button
+                                type="button"
+                                className="flex items-center justify-center w-full bg-gradient-to-r from-red-500 to-pink-500 text-white py-3 rounded-lg shadow-md hover:from-red-600 hover:to-pink-600 transition-transform transform hover:scale-105"
+                            >
+                                <FaGoogle className="mr-2 text-lg" />
+                                Sign in with Google
+                            </button>
+                        </div>
+
+                        <div>
+                            <button
+                                type="submit"
+                                className="flex items-center justify-center w-full bg-blue-500 text-white py-3 rounded-lg hover:bg-blue-600 transition"
+                            >
+                                Log into account
+                            </button>
+                        </div>
+                    </form>
+                </div>
+
+                <div className="hidden md:flex flex-1 justify-center items-center">
+                    <img
+                        src={background}
+                        alt="Signup illustration"
+                        className="rounded-r-xl w-full max-h-[500px] object-contain"
+                    />
+                </div>
             </div>
-
-            <button className="w-4/5 h-10 bg-[#4E2F7F] text-white rounded-full mt-12 text-lg font-medium">
-              Sign in
-            </button>
-
-            <div className="flex items-center my-6 space-x-2">
-              <div className="flex-1 border-b border-gray-300"></div>
-              <span className="text-sm text-gray-400">or</span>
-              <div className="flex-1 border-b border-gray-300"></div>
-            </div>
-
-            <div className="flex items-center justify-center space-x-2 cursor-pointer font-bold text-gray-700 mb-5">
-              <img src={logo} alt="Google logo" className="w-8" />
-              <span>Sign in with Google</span>
-            </div>
-
-            <div className="text-sm text-gray-400">
-              Don't Have an Account?{" "}
-              <a href="/" className="text-[#4E2F7F]">Sign up</a>
-            </div>
-          </div>
         </div>
-
-        <div className="w-1/2 overflow-hidden">
-          <img src={art} alt="art" className="w-full h-full object-cover" />
-        </div>
-      </div>
-    </div>
     );
 }
+
+export default Login;

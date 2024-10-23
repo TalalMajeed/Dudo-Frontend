@@ -5,7 +5,6 @@ function Signup() {
     return (
         <div className="flex items-center justify-center min-h-screen bg-[#202124]">
             <div className="bg-white p-12 rounded-xl shadow-lg max-w-5xl flex w-full">
-                {/* Left Pane */}
                 <div className="flex-1 pr-10">
                     <h1 className="text-5xl font-bold text-gray-800 mb-6">
                         Create new account<span className="text-blue-500">.</span>
@@ -74,7 +73,6 @@ function Signup() {
                     </form>
                 </div>
 
-                {/* Image Section */}
                 <div className="hidden md:flex flex-1 justify-center items-center">
                     <img
                         src={background}
