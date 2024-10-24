@@ -19,7 +19,5 @@ export default function Loader({ width, height, type }) {
         <span style={{ width: domain[0], height: domain[0], borderWidth: type == "simple" ? 2 : 3 }}></span>
         <span style={{ width: domain[1], height: domain[1], borderWidth: type == "simple" ? 2 : 3 }}></span>
         {type == "intro" ? <img src={Logo} alt="" width={60} /> : null}
-
-
     </section>;
 }
