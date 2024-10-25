@@ -10,12 +10,9 @@ import './global.scss'
 import store from './store';
 import Index from './pages/Index/index.jsx'
 import { Provider } from 'react-redux'
-import Panel from './pages/Panel/index.jsx'
+import Dashboard from './pages/Dashboard/index.jsx'
 import Login from './pages/Login/index.jsx'
-import Signup from './pages/Signup/index.jsx';
-import Verification from './pages/Verification/index.jsx';
-import TeamInfo from './pages/TeamInfo/index.jsx';
-import Customization from './pages/Index/Customization/index.jsx';
+import Register from './pages/Register/index.jsx'
 
 
 const AppContext = React.createContext({});
@@ -28,7 +25,7 @@ const theme = createTheme({
     },
     typography: {
         fontFamily: [
-            'Raleway',
+            'Poppins',
             'sans-serif',
         ].join(','),
     },
@@ -40,28 +37,17 @@ const router = createBrowserRouter([
         element: <Index />,
     },
     {
-        path: "/panel",
-        element: <Panel />,
+        path: "/dashboard",
+        element: <Dashboard />,
     },
     {
         path: "/login",
         element: <Login />,
     },
     {
-        path: "/signup",
-        element: <Signup />,
+        path: "/register",
+        element: <Register />,
     },
-    {
-        path: "/verification",
-        element: <Verification />,
-    },
-    { path:"/teaminfo",
-        element: <TeamInfo />,
-    },
-    {
-        path: "/customization",
-        element: <Customization/>,
-    }
 ]);
 
 const App = () => {

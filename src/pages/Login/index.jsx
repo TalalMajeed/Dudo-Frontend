@@ -6,8 +6,8 @@ function Login() {
         <div className="flex items-center justify-center min-h-screen bg-[#202124]">
             <div className="bg-white p-12 rounded-xl shadow-lg max-w-5xl flex w-full">
                 <div className="flex-1 pr-10">
-                    <h1 className="text-5xl font-bold text-gray-800 mb-6">
-                        Log into an exsisting account<span className="text-blue-500">.</span>
+                    <h1 className="text-4xl font-bold text-gray-800 mb-6">
+                        Log into an existing account<span className="text-blue-500">.</span>
                     </h1>
                     <p className="text-gray-600 mb-8">
                         Dont have an account?{' '}

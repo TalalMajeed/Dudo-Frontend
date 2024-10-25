@@ -1,12 +1,12 @@
 import { FaEnvelope, FaLock, FaGoogle } from 'react-icons/fa';
 import background from '../../assets/background.png';
 
-function Signup() {
+function AdminRegister() {
     return (
         <div className="flex items-center justify-center min-h-screen bg-[#202124]">
             <div className="bg-white p-12 rounded-xl shadow-lg max-w-5xl flex w-full">
                 <div className="flex-1 pr-10">
-                    <h1 className="text-5xl font-bold text-gray-800 mb-6">
+                    <h1 className="text-4xl font-bold text-gray-800 mb-6">
                         Create new account<span className="text-blue-500">.</span>
                     </h1>
                     <p className="text-gray-600 mb-8">
@@ -85,4 +85,4 @@ function Signup() {
     );
 }
 
-export default Signup;
+export default AdminRegister;
