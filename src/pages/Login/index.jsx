@@ -1,17 +1,28 @@
 import { FaEnvelope, FaLock, FaGoogle } from 'react-icons/fa';
-import background from '../../assets/background.png';
-
+import background from '../../assets/background-wallpaper.jpg';
+import { useNavigate } from 'react-router-dom';
 function Login() {
+    const navigate = useNavigate();
+    const swicthtoRegister =(e)=> {
+        e.preventDefault();
+        navigate('/register');
+    }
+    const loggedin =(e)=> {
+        e.preventDefault();
+        navigate('/dashboard');
+    }
     return (
-        <div className="flex items-center justify-center min-h-screen bg-[#202124]">
-            <div className="bg-white p-12 rounded-xl shadow-lg max-w-5xl flex w-full">
-                <div className="flex-1 pr-10">
+        <div className="flex items-center justify-center min-h-screen bg-gradient-to-b from-[#BEA9E0] to-[#6C4AB6]"
+        style={{ backgroundImage: `url(${background})`, backgroundSize: 'cover', backgroundPosition: 'center' }}
+        >
+<div className="bg-white p-12 rounded-xl shadow-lg flex w-full" style={{ maxWidth: '480px' }}>
+<div className="flex-1">
                     <h1 className="text-4xl font-bold text-gray-800 mb-6">
-                        Log into an existing account<span className="text-blue-500">.</span>
+                        Log into an existing account<span className="text-[#4E2F7F]">.</span>
                     </h1>
                     <p className="text-gray-600 mb-8">
                         Dont have an account?{' '}
-                        <a href="#" className="text-blue-500 hover:underline">
+                        <a href="#" className="text-[#4E2F7F] hover:underline" onClick={swicthtoRegister}>
                             Sign up
                         </a>
                     </p>
@@ -24,7 +35,7 @@ function Login() {
                                 <input
                                     type="email"
                                     placeholder="Email"
-                                    className="w-full p-4 bg-white border-0 focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
+                                    className="w-full p-4 bg-white border-0 focus:outline-none focus:ring-2 focus:ring-[#A286DD] transition"
                                 />
                             </div>
                         </div>
@@ -35,7 +46,7 @@ function Login() {
                                 <input
                                     type="password"
                                     placeholder="Password"
-                                    className="w-full p-4 bg-white border-0 focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
+                                    className="w-full p-4 bg-white border-0 focus:outline-none focus:ring-2 focus:ring-[#A286DD] transition"
                                 />
                             </div>
                         </div>
@@ -43,7 +54,7 @@ function Login() {
                         <div className="mb-6">
                             <button
                                 type="button"
-                                className="flex items-center justify-center w-full bg-gradient-to-r from-red-500 to-pink-500 text-white py-3 rounded-lg shadow-md hover:from-red-600 hover:to-pink-600 transition-transform transform hover:scale-105"
+                                className="flex items-center justify-center w-full bg-gradient-to-r from-red-500 to-pink-500 text-white py-3 rounded-lg shadow-md hover:from-red-600 hover:to-pink-600 transition-transform transform hover:scale-104"
                             >
                                 <FaGoogle className="mr-2 text-lg" />
                                 Sign in with Google
@@ -53,7 +64,8 @@ function Login() {
                         <div>
                             <button
                                 type="submit"
-                                className="flex items-center justify-center w-full bg-blue-500 text-white py-3 rounded-lg hover:bg-blue-600 transition"
+                                className="flex items-center justify-center w-full bg-[#A286DD] text-white py-3 rounded-lg hover:bg-[#7E5A9B] transition"
+                                onClick={loggedin}
                             >
                                 Log into account
                             </button>
@@ -61,13 +73,7 @@ function Login() {
                     </form>
                 </div>
 
-                <div className="hidden md:flex flex-1 justify-center items-center">
-                    <img
-                        src={background}
-                        alt="Signup illustration"
-                        className="rounded-r-xl w-full max-h-[500px] object-contain"
-                    />
-                </div>
+              
             </div>
         </div>
     );

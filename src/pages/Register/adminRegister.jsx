@@ -1,17 +1,30 @@
 import { FaEnvelope, FaLock, FaGoogle } from 'react-icons/fa';
-import background from '../../assets/background.png';
+import background from '../../assets/background-wallpaper.jpg';
+import { useNavigate } from 'react-router-dom';
 
 function AdminRegister() {
+    const navigate = useNavigate();
+    const handleNextClick = (e) =>{
+        e.preventDefault();
+        const nextPage = 3;
+        navigate(`/register?page=${nextPage}`);
+       }
+    const swicthtoLogin =(e)=> {
+        e.preventDefault();
+        navigate('/login');
+    }
     return (
-        <div className="flex items-center justify-center min-h-screen bg-[#202124]">
-            <div className="bg-white p-12 rounded-xl shadow-lg max-w-5xl flex w-full">
-                <div className="flex-1 pr-10">
+        <div className="flex items-center justify-center min-h-screen bg-[#202124]" 
+        style={{ backgroundImage: `url(${background})`, backgroundSize: 'cover', backgroundPosition: 'center' }}
+        >
+            <div className="bg-white p-12 rounded-xl shadow-lg flex w-full " style={{ maxWidth: '550px' }}>
+                <div className="flex-1 ">
                     <h1 className="text-4xl font-bold text-gray-800 mb-6">
-                        Create new account<span className="text-blue-500">.</span>
+                        Create new account<span className="text-[#7E5A9B]">.</span>
                     </h1>
                     <p className="text-gray-600 mb-8">
                         Already a member?{' '}
-                        <a href="#" className="text-blue-500 hover:underline">
+                        <a href="#" className="text-[#7E5A9B] hover:underline" onClick={swicthtoLogin}>
                             Log In
                         </a>
                     </p>
@@ -21,12 +34,12 @@ function AdminRegister() {
                             <input
                                 type="text"
                                 placeholder="First name"
-                                className="w-full p-4 border border-gray-300 bg-white rounded-l-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
+                                className="w-full p-4 border border-gray-300 bg-white rounded-l-lg focus:outline-none focus:ring-2 focus:ring-[#A286DD] transition"
                             />
                             <input
                                 type="text"
                                 placeholder="Last name"
-                                className="w-full p-4 border border-gray-300 bg-white rounded-r-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
+                                className="w-full p-4 border border-gray-300 bg-white rounded-r-lg focus:outline-none focus:ring-2 focus:ring-[#A286DD] transition"
                             />
                         </div>
 
@@ -36,7 +49,7 @@ function AdminRegister() {
                                 <input
                                     type="email"
                                     placeholder="Email"
-                                    className="w-full p-4 bg-white border-0 focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
+                                    className="w-full p-4 bg-white border-0 focus:outline-none focus:ring-2 focus:ring-[#A286DD] transition"
                                 />
                             </div>
                         </div>
@@ -47,7 +60,7 @@ function AdminRegister() {
                                 <input
                                     type="password"
                                     placeholder="Password"
-                                    className="w-full p-4 bg-white border-0 focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
+                                    className="w-full p-4 bg-white border-0 focus:outline-none focus:ring-2 focus:ring-[#A286DD] transition"
                                 />
                             </div>
                         </div>
@@ -55,7 +68,7 @@ function AdminRegister() {
                         <div className="mb-6">
                             <button
                                 type="button"
-                                className="flex items-center justify-center w-full bg-gradient-to-r from-red-500 to-pink-500 text-white py-3 rounded-lg shadow-md hover:from-red-600 hover:to-pink-600 transition-transform transform hover:scale-105"
+                                className="flex items-center justify-center w-full bg-gradient-to-r from-red-500 to-pink-500 text-white py-3 rounded-lg shadow-md hover:from-red-600 hover:to-pink-600 transition-transform transform hover:scale-104"
                             >
                                 <FaGoogle className="mr-2 text-lg" />
                                 Sign in with Google
@@ -65,20 +78,13 @@ function AdminRegister() {
                         <div>
                             <button
                                 type="submit"
-                                className="flex items-center justify-center w-full bg-blue-500 text-white py-3 rounded-lg hover:bg-blue-600 transition"
+                                className="flex items-center justify-center w-full bg-[#A286DD] text-white py-3 rounded-lg hover:bg-[#7E5A9B] transition"
+                                onClick={handleNextClick}
                             >
                                 Create account
                             </button>
                         </div>
                     </form>
-                </div>
-
-                <div className="hidden md:flex flex-1 justify-center items-center">
-                    <img
-                        src={background}
-                        alt="Signup illustration"
-                        className="rounded-r-xl w-full max-h-[500px] object-contain"
-                    />
                 </div>
             </div>
         </div>

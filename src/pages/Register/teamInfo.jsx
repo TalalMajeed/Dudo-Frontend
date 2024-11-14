@@ -1,17 +1,30 @@
-import { FaArrowLeft } from 'react-icons/fa';
-import background from '../../assets/background.png';
-
+ import { useNavigate } from 'react-router-dom';
+ import background from '../../assets/background-wallpaper.jpg';
 function TeamInfo() {
+  const navigate = useNavigate();
+
+   const handleNextClick = (e) =>{
+     e.preventDefault();
+     const nextPage = 2;
+     navigate(`/register?page=${nextPage}`);
+    }
+    const switchtoLogin = (e)=>{
+        e.preventDefault();
+        navigate('/login')
+    }
+
     return (
-        <div className="flex items-center justify-center min-h-screen bg-[#202124]">
-            <div className="bg-white p-12 rounded-xl shadow-lg max-w-5xl flex w-full">
-                <div className="flex-1 pr-10">
+        <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-[#A286DD] to-[#C4A4F6]"
+        style={{ backgroundImage: `url(${background})`, backgroundSize: 'cover', backgroundPosition: 'center' }}
+        >
+            <div className="bg-white p-12 rounded-xl shadow-lg max-w-xl flex w-full">
+                <div className="flex-1 ">
                     <h1 className="text-4xl font-bold text-gray-800 mb-6">
-                        Team Info<span className="text-blue-500">.</span>
+                        Team Info<span className="text-[#7E5A9B]">.</span>
                     </h1>
                     <p className="text-gray-600 mb-8">
                         Already a member?{' '}
-                        <a href="#" className="text-blue-500 hover:underline">
+                        <a href="#" className="text-[#7E5A9B] hover:underline" onClick={switchtoLogin}>
                             Log In
                         </a>
                     </p>
@@ -21,8 +34,9 @@ function TeamInfo() {
                             <input
                                 type="text"
                                 placeholder="Team Name"
-                                className="w-full p-4 border border-gray-300 bg-white rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
+                                className="w-full p-4 border border-gray-300 bg-white rounded-lg focus:outline-none focus:ring-2 focus:ring-[#A286DD] transition"
                             />
+                            
                         </div>
 
                         <div className="mb-6">
@@ -30,19 +44,19 @@ function TeamInfo() {
                             <div className="flex space-x-4">
                                 <button
                                     type="button"
-                                    className="flex-1 py-3 bg-gray-100 border border-gray-300 rounded-lg hover:bg-blue-500 hover:text-white transition"
+                                    className="flex-1 py-3 bg-gray-100 border border-gray-300 rounded-lg hover:bg-[#A286DD] hover:text-white transition"
                                 >
                                     Small
                                 </button>
                                 <button
                                     type="button"
-                                    className="flex-1 py-3 bg-gray-100 border border-gray-300 rounded-lg hover:bg-blue-500 hover:text-white transition"
+                                    className="flex-1 py-3 bg-gray-100 border border-gray-300 rounded-lg hover:bg-[#A286DD] hover:text-white transition"
                                 >
                                     Medium
                                 </button>
                                 <button
                                     type="button"
-                                    className="flex-1 py-3 bg-gray-100 border border-gray-300 rounded-lg hover:bg-blue-500 hover:text-white transition"
+                                    className="flex-1 py-3 bg-gray-100 border border-gray-300 rounded-lg hover:bg-[#A286DD] hover:text-white transition"
                                 >
                                     Large
                                 </button>
@@ -52,7 +66,7 @@ function TeamInfo() {
                         <div className="mb-8">
                             <label className="text-gray-600 mb-2 block">Select Industry:</label>
                             <select
-                                className="w-full p-4 border border-gray-300 bg-white rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
+                                className="w-full p-4 border border-gray-300 bg-white rounded-lg focus:outline-none focus:ring-2 focus:ring-[#A286DD] transition"
                             >
                                 <option value="">Choose an industry</option>
                                 <option value="tech">Technology</option>
@@ -63,17 +77,12 @@ function TeamInfo() {
                         </div>
 
                         <div className="flex space-x-4">
-                            <button
-                                type="button"
-                                className="flex items-center justify-center flex-1 bg-gradient-to-r from-red-500 to-pink-500 text-white py-3 rounded-lg shadow-md hover:from-red-600 hover:to-pink-600 transition-transform transform hover:scale-105"
-                            >
-                                <FaArrowLeft className="mr-2 text-lg" />
-                                previous
-                            </button>
+        
 
                             <button
                                 type="submit"
-                                className="flex-1 bg-blue-500 text-white py-3 rounded-lg hover:bg-blue-600 transition"
+                                className="flex-1 bg-[#A286DD] text-white py-3 rounded-lg hover:bg-[#7E5A9B] transition"
+                                onClick={handleNextClick}
                             >
                                 next
                             </button>
@@ -81,13 +90,6 @@ function TeamInfo() {
                     </form>
                 </div>
 
-                <div className="hidden md:flex flex-1 justify-center items-center">
-                    <img
-                        src={background}
-                        alt="Signup illustration"
-                        className="rounded-r-xl w-full max-h-[500px] object-contain"
-                    />
-                </div>
             </div>
         </div>
     );

@@ -47,7 +47,8 @@ const router = createBrowserRouter([
     {
         path: "/register",
         element: <Register />,
-    },
+    }
+    
 ]);
 
 const App = () => {
@@ -66,4 +67,3 @@ ReactDOM.createRoot(document.getElementById('root')).render(
     <App />
 )
 
-//This is Working

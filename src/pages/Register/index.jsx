@@ -2,25 +2,27 @@ import TeamInfo from './teamInfo';
 import AdminRegister from './adminRegister';
 import Customization from './customization';
 import Verification from './verification';
-import { useState } from 'react';
+import { useLocation } from 'react-router-dom';
 
 function Register() {
-    const urlParams = new URLSearchParams(window.location.search);
-    const page = urlParams.get('page');
+    const location = useLocation(); // Get the current location (URL)
+    const urlParams = new URLSearchParams(location.search); // Get the query parameters
+    const page = urlParams.get('page'); // Extract the 'page' param
 
-    if (!page || page == "1") {
+    // Based on 'page' param, render the corresponding component
+    if (!page || page === "1") {
         return <TeamInfo />
     }
-    if (page == "2") {
+    if (page === "2") {
         return <AdminRegister />
     }
-    if (page == "3") {
+    if (page === "3") {
         return <Verification />
     }
-    if (page == "4") {
+    if (page === "4") {
         return <Customization />
     }
-    return <Register />
+    return <Register /> // Default case (should never hit unless URL is malformed)
 }
 
 export default Register;
