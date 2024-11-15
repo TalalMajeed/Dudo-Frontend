@@ -13,7 +13,7 @@ import { Provider } from 'react-redux'
 import Dashboard from './pages/Dashboard/index.jsx'
 import Login from './pages/Login/index.jsx'
 import Register from './pages/Register/index.jsx'
-
+import KanBan from './pages/Kanban/index.jsx'
 
 const AppContext = React.createContext({});
 
@@ -47,6 +47,10 @@ const router = createBrowserRouter([
     {
         path: "/register",
         element: <Register />,
+    },
+    {
+        path: "/kanban",
+        element: <KanBan/>
     }
     
 ]);
