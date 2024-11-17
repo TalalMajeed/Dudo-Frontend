@@ -14,7 +14,7 @@ import Dashboard from './pages/Dashboard/index.jsx'
 import Login from './pages/Login/index.jsx'
 import Register from './pages/Register/index.jsx'
 import KanBan from './pages/Kanban/index.jsx'
-
+import Calander from './pages/Calander/index.jsx'
 const AppContext = React.createContext({});
 
 const theme = createTheme({
@@ -51,6 +51,10 @@ const router = createBrowserRouter([
     {
         path: "/kanban",
         element: <KanBan/>
+    },
+    {
+        path: "/calendar",
+        element: <Calander/>
     }
     
 ]);
