@@ -15,6 +15,7 @@ import Login from './pages/Login/index.jsx'
 import Register from './pages/Register/index.jsx'
 import KanBan from './pages/Kanban/index.jsx'
 import Calander from './pages/Calander/index.jsx'
+import Chat from './pages/Chat/index.jsx';
 const AppContext = React.createContext({});
 
 const theme = createTheme({
@@ -55,8 +56,11 @@ const router = createBrowserRouter([
     {
         path: "/calendar",
         element: <Calander/>
-    }
-    
+    },
+    {
+        path: "/chat",
+        element: <Chat/>
+    },
 ]);
 
 const App = () => {
