@@ -14,9 +14,9 @@ const SideBar = () => {
         {contacts.map((contact) => (
           <li
             key={contact.id}
-            className="flex items-center p-2 bg-white text-[#4e2f7f] rounded-lg shadow-sm hover:bg-gray-300 transition-shadow duration-200"
+            className="flex items-center p-2 bg-white text-[#4e2f7f] rounded-lg shadow-sm hover:bg-purple-100 transition-shadow duration-200"
           >
-            <div className="w-8 h-8 bg-gray-300 rounded-full flex items-center justify-center text-lg font-semibold text-white">
+            <div className="w-8 h-8 bg-[#4e2f7f] rounded-full flex items-center justify-center text-lg font-semibold text-white">
               {contact.name.charAt(0)}
             </div>
             <p className="text-lg ml-4 font-medium">{contact.name}</p>
