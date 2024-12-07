@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import SendIcon from "@mui/icons-material/Send";
 import { IconButton } from "@mui/material";
 import SideBar from "./sidebar";
@@ -9,40 +9,50 @@ const useQueue = (maxSize) => {
   const enqueue = (item) => {
     setQueue((prevQueue) => {
       const newQueue = [...prevQueue, item];
-      return newQueue.length > maxSize ? newQueue.slice(1) : newQueue;
+      return newQueue.length > maxSize ? newQueue.slice(newQueue.length - maxSize) : newQueue;
     });
   };
 
-  const getQueue = () => queue;
+  const dequeueAll = () => queue;
 
-  return { enqueue, getQueue };
+  const clearQueue = () => setQueue([]);
+
+  return { enqueue, dequeueAll, clearQueue };
 };
 
 const ChatScreen = () => {
   const [socket, setSocket] = useState(null);
   const [message, setMessage] = useState("");
-  const { enqueue, getQueue } = useQueue(50);
   const [contacts, setContacts] = useState([
     { id: "1", name: "John Doe" },
     { id: "2", name: "Jane Smith" },
     { id: "3", name: "Alex Johnson" },
   ]);
-  const [activeContact, setActiveContact] = useState("1"); // Default active contact (John Doe)
-  const [messages, setMessages] = useState({
-    "1": [
-      { text: "Hello! How can I assist you today?", sender: "contact" },
-      { text: "Hi! I have a question about my account.", sender: "user" },
-    ],
-    "2": [
-      { text: "Hi there! How can I help you?", sender: "contact" },
-      { text: "I need help with my order.", sender: "user" },
-    ],
-    "3": [
-      { text: "Hey! Need assistance?", sender: "contact" },
-      { text: "What are the latest features?", sender: "user" },
-    ],
-  });
+  const [activeContact, setActiveContact] = useState("1");
+  const { enqueue, dequeueAll, clearQueue } = useQueue(100); // Queue with a max size of 100 messages
+  const [messages, setMessages] = useState({});
+  const chatEndRef = useRef(null);
 
+  // Fetch messages from backend
+  useEffect(() => {
+    const fetchMessages = async () => {
+      try {
+        const response = await fetch(`http://localhost:8080/messages/${activeContact}`);
+        const data = await response.json();
+
+        // Populate queue with fetched messages
+        clearQueue();
+        data.forEach((msg) => enqueue(msg));
+        setMessages((prevMessages) => ({ ...prevMessages, [activeContact]: data }));
+      } catch (error) {
+        console.error("Failed to fetch messages:", error);
+      }
+    };
+
+    fetchMessages();
+  }, [activeContact, enqueue, clearQueue]);
+
+  // WebSocket setup
   useEffect(() => {
     const ws = new WebSocket("ws://localhost:8080");
     setSocket(ws);
@@ -56,16 +66,14 @@ const ChatScreen = () => {
     };
 
     ws.onmessage = (event) => {
-      const receivedMessage = event.data;
+      const receivedMessage = JSON.parse(event.data);
       console.log("Message received:", receivedMessage);
 
-      enqueue({ text: receivedMessage, sender: "contact" });
+      enqueue(receivedMessage);
       setMessages((prevMessages) => {
         const updatedMessages = { ...prevMessages };
-        updatedMessages[activeContact] = [
-          ...updatedMessages[activeContact],
-          { text: receivedMessage, sender: "contact" },
-        ];
+        const contactMessages = updatedMessages[activeContact] || [];
+        updatedMessages[activeContact] = [...contactMessages, receivedMessage];
         return updatedMessages;
       });
     };
@@ -73,49 +81,71 @@ const ChatScreen = () => {
     return () => {
       ws.close();
     };
-  }, [enqueue, activeContact]);
+  }, [activeContact, enqueue]);
 
-  const handleSendMessage = () => {
+  const handleSendMessage = async () => {
     if (message.trim()) {
-      enqueue({ text: message, sender: "user" });
+      const newMessage = { text: message, sender: "user", timestamp: new Date().toISOString() };
+
+      enqueue(newMessage);
       setMessages((prevMessages) => {
         const updatedMessages = { ...prevMessages };
-        updatedMessages[activeContact] = [
-          ...updatedMessages[activeContact],
-          { text: message, sender: "user" },
-        ];
+        const contactMessages = updatedMessages[activeContact] || [];
+        updatedMessages[activeContact] = [...contactMessages, newMessage];
         return updatedMessages;
       });
+
       setMessage("");
 
+      // Send message to backend
       if (socket && socket.readyState === WebSocket.OPEN) {
-        socket.send(message);
+        socket.send(JSON.stringify(newMessage));
       } else {
         console.log("WebSocket is not connected.");
+      }
+
+      try {
+        await fetch(`http://localhost:8080/messages/${activeContact}`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(newMessage),
+        });
+      } catch (error) {
+        console.error("Failed to send message to backend:", error);
       }
     }
   };
 
-  const handleContactClick = (contactId) => {
-    setActiveContact(contactId); // Update the active contact when clicked
+  const handleKeyPress = (e) => {
+    if (e.key === "Enter") {
+      handleSendMessage();
+    }
   };
+
+  const handleContactClick = (contactId) => {
+    setActiveContact(contactId);
+  };
+
+  useEffect(() => {
+    chatEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, [messages]);
 
   return (
     <div className="flex h-screen">
       {/* Sidebar */}
       <SideBar
         contacts={contacts}
-        handleContactClick={handleContactClick} // Pass handler to the Sidebar
+        handleContactClick={handleContactClick}
         activeContact={activeContact}
       />
 
       {/* Chat Window */}
       <div className="flex-grow p-4 overflow-y-auto bg-gray-50 flex flex-col">
-        <div className="text-xl font-semibold mb-4">
+        <div className="text-xl font-semibold mb-4 p-2 border-b-2 border-b-[#4e2f7f]">
           {contacts.find((contact) => contact.id === activeContact)?.name}
         </div>
         <div className="space-y-4 flex-grow overflow-y-auto">
-          {messages[activeContact]?.map((msg, index) => (
+          {dequeueAll().map((msg, index) => (
             <div
               key={index}
               className={`flex ${msg.sender === "user" ? "justify-end" : "justify-start"}`}
@@ -129,6 +159,7 @@ const ChatScreen = () => {
               </div>
             </div>
           ))}
+          <div ref={chatEndRef}></div>
         </div>
 
         {/* Input Field */}
@@ -138,6 +169,7 @@ const ChatScreen = () => {
             className="flex-grow p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#4e2f7f]"
             value={message}
             onChange={(e) => setMessage(e.target.value)}
+            onKeyDown={handleKeyPress}
             placeholder="Type a message"
           />
           <IconButton
