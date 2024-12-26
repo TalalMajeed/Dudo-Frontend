@@ -14,14 +14,6 @@ import Panel from "./pages/Panel";
 
 import { ConfigProvider } from "antd";
 
-const verify = () => {
-    return true;
-};
-
-const ProtectedRoute = ({ children }) => {
-    return verify() ? children : <Navigate to="/login" replace />;
-};
-
 function App() {
     return (
         <ConfigProvider
@@ -40,14 +32,7 @@ function App() {
                     <Route path="/welcome" element={<Welcome />} />
                     <Route path="/login" element={<Login />} />
                     <Route path="/register" element={<Register />} />
-                    <Route
-                        path="/panel"
-                        element={
-                            <ProtectedRoute>
-                                <Panel />
-                            </ProtectedRoute>
-                        }
-                    />
+                    <Route path="/panel" element={<Panel />} />
                     <Route
                         path="*"
                         element={
