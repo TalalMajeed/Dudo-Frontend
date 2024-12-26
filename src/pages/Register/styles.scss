@@ -1,22 +1,16 @@
-@import "../../global.scss";
+#register {
+    background: url("../../assets/background.jpg");
+    background-size: cover;
+    background-position: center;
 
-#login {
-    background-color: $secondary-light;
-}
-
-@media screen and (max-width: 786px) {
-    #login {
-        background-color: white;
-        #login-card {
-            width: 100%;
-            box-shadow: none !important;
-
-            div:first-child {
-                display: none;
-            }
-            form {
-                width: 100%;
-            }
+    #otp {
+        * {
+            height: 50px;
+            margin-bottom: 20px;
         }
+    }
+
+    #text-area {
+        resize: none;
     }
 }
