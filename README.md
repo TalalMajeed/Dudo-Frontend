@@ -8,6 +8,8 @@ We are a group of computer science students at NUST University, and this reposit
 
 -   Talal Majeed - [GitHub](https://www.github.com/TalalMajeed)
 -   Ezn Zaidi - [GitHub](https://github.com/EznXadee)
+-   Noor Fatima - [GitHub](https://github.com/nooorf)
+-   Rida Tayyab - [GitHub](https://github.com/Rida-Tayyab)
 
 ## Installation:
 
