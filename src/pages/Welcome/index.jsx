@@ -9,7 +9,7 @@ function HomeScreen() {
         <>
             <section className="mt-[80px] text-center flex items-center flex-col">
                 <h1 className="text-[3.5rem] font-semibold">
-                    Collaborate smarter with{" "}
+                    Collaborate smarter with
                 </h1>
                 <h1 className="text-[3.5rem] font-semibold">
                     streamlined workflow

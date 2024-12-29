@@ -2,20 +2,13 @@ import "./styles.scss";
 import { Button, Select, Radio, Input } from "antd";
 import { TeamOutlined, SettingOutlined, UserOutlined } from "@ant-design/icons";
 import { useNavigate } from "react-router-dom";
-import React from "react";
+import React, { useEffect } from "react";
 import { Alert } from "antd";
 import { MailOutlined, LockOutlined } from "@ant-design/icons";
 import { PlusOutlined } from "@ant-design/icons";
-import { Image, Upload } from "antd";
+import { Upload } from "antd";
 const { TextArea } = Input;
-
-const getBase64 = (file) =>
-    new Promise((resolve, reject) => {
-        const reader = new FileReader();
-        reader.readAsDataURL(file);
-        reader.onload = () => resolve(reader.result);
-        reader.onerror = (error) => reject(error);
-    });
+import { API } from "../../utils/constants";
 
 function TeamInfo(props) {
     const navigate = useNavigate();
@@ -37,6 +30,7 @@ function TeamInfo(props) {
                 prefix={<TeamOutlined className="mr-2 text-[#999999]" />}
                 className="w-[100%] h-[50px] text-base mb-5"
                 placeholder="Enter Team Name"
+                onChange={(e) => props.setTeamName(e.target.value)}
             />
             <p className="text-base mb-5">Select Team Size</p>
             <Radio.Group
@@ -48,19 +42,19 @@ function TeamInfo(props) {
                     className="text-center text-base leading-[45px] h-[50px] w-[33.3%]"
                     value="0"
                 >
-                    Large
+                    2 to 5
                 </Radio.Button>
                 <Radio.Button
                     className="text-center text-base leading-[45px] h-[50px] w-[33.3%]"
                     value="1"
                 >
-                    Default
+                    5 to 20
                 </Radio.Button>
                 <Radio.Button
                     className="text-center text-base leading-[45px] h-[50px] w-[33.3%]"
                     value="2"
                 >
-                    Small
+                    20 to 50
                 </Radio.Button>
             </Radio.Group>
             <p className="text-base mb-5">Select Industry</p>
@@ -70,6 +64,7 @@ function TeamInfo(props) {
                 prefix={
                     <SettingOutlined className="mr-2 mt-[6px] text-[#999999]" />
                 }
+                onChange={(value) => props.setTeamIndustry(value)}
             >
                 <Select.Option value="technology">Technology</Select.Option>
                 <Select.Option value="finance">Finance</Select.Option>
@@ -83,6 +78,7 @@ function TeamInfo(props) {
             <Button
                 type="primary"
                 className="w-[100%] h-[45px] text-base mt-8 mb-5"
+                onClick={() => props.setPage(1)}
             >
                 Continue
             </Button>
@@ -91,6 +87,13 @@ function TeamInfo(props) {
 }
 
 function CreateAccount(props) {
+    const [name1, setName1] = React.useState("");
+    const [name2, setName2] = React.useState("");
+
+    useEffect(() => {
+        props.setName(`${name1} ${name2}`);
+    }, [name1, name2]);
+
     return (
         <form className="bg-white p-10 rounded-lg shadow-lg max-w-[480px]">
             <h1 className="text-4xl font-bold">Create new account.</h1>
@@ -110,12 +113,14 @@ function CreateAccount(props) {
                     prefix={<UserOutlined className="mr-2 text-[#999999]" />}
                     className="w-[100%] h-[50px] text-base mt-2 mb-5"
                     placeholder="First Name"
+                    onChange={(e) => setName1(e.target.value)}
                 />
                 <Input
                     size="large"
                     prefix={<UserOutlined className="mr-2 text-[#999999]" />}
                     className="w-[100%] h-[50px] text-base mt-2 mb-5"
                     placeholder="Last Name"
+                    onChange={(e) => setName2(e.target.value)}
                 />
             </div>
             <Input
@@ -123,25 +128,33 @@ function CreateAccount(props) {
                 prefix={<MailOutlined className="mr-2 text-[#999999]" />}
                 className="w-[100%] h-[50px] text-base mb-5"
                 placeholder="Email"
+                onChange={(e) => props.setEmail(e.target.value)}
             />
             <Input
                 size="large"
                 prefix={<LockOutlined className="mr-2 text-[#999999]" />}
                 className="w-[100%] h-[50px] text-base mb-8"
                 placeholder="Password"
+                onChange={(e) => props.setPassword(e.target.value)}
             />
             <hr />
             <Button
+                onClick={props.submitRegistration}
+                loading={props.loading}
                 type="primary"
                 className="w-[100%] h-[45px] text-base mt-8 mb-5"
             >
                 Create Team
             </Button>
-            <Button className="w-[100%] h-[45px] text-base mb-5">
+            <Button
+                className="w-[100%] h-[45px] text-base mb-5"
+                onClick={() => props.setPage(0)}
+            >
                 Go Back
             </Button>
             <Alert
-                message="Email Already in Use"
+                style={{ display: props.error ? "block" : "none" }}
+                message={props.error}
                 type="error"
                 className="text-base text-red-500 text-center w-[100%] h-[45px] mb-5"
             />
@@ -282,17 +295,103 @@ function UpdateProfile(props) {
     );
 }
 export default function Index() {
-    const [size, setSize] = React.useState("1");
-    const [page, setPage] = React.useState(3);
+    const [teamName, setTeamName] = React.useState("");
+    const [teamSize, setTeamSize] = React.useState("1");
+    const [teamIndustry, setTeamIndustry] = React.useState("");
+    const [name, setName] = React.useState("");
+    const [email, setEmail] = React.useState("");
+    const [password, setPassword] = React.useState("");
+    const [loading, setLoading] = React.useState(false);
+    const [error, setError] = React.useState("");
+
+    const submitRegistration = async () => {
+        setLoading(true);
+        setError("");
+        try {
+            console.log("Submitting Registration");
+            //If any of the information is missing, show an error
+            if (
+                teamName === "" ||
+                teamSize === "" ||
+                teamIndustry === "" ||
+                name === "" ||
+                email === "" ||
+                password === ""
+            ) {
+                setError("Please fill in all the fields.");
+                return;
+            }
+
+            console.log(
+                JSON.stringify({
+                    teamName,
+                    teamSize:
+                        teamSize == 0
+                            ? "2-5"
+                            : teamSize == 1
+                            ? "5-20"
+                            : "20-50",
+                    teamIndustry,
+                    name,
+                    email,
+                    password,
+                })
+            );
+
+            const response = await fetch(API + "/api/register", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    teamName,
+                    teamSize:
+                        teamSize == 0
+                            ? "2-5"
+                            : teamSize == 1
+                            ? "5-20"
+                            : "20-50",
+                    teamIndustry,
+                    name,
+                    email,
+                    password,
+                }),
+            });
+            const data = await response.json();
+            console.log(data);
+        } catch (error) {
+            console.error(error);
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    const [page, setPage] = React.useState(0);
     return (
         <main
             id="register"
             className="w-[100svw] h-[100svh] flex flex-col items-center justify-center"
         >
             {page === 0 && (
-                <TeamInfo size={size} setSize={setSize} setPage={setPage} />
+                <TeamInfo
+                    size={teamSize}
+                    setSize={setTeamSize}
+                    setPage={setPage}
+                    setTeamName={setTeamName}
+                    setTeamIndustry={setTeamIndustry}
+                />
             )}
-            {page === 1 && <CreateAccount setPage={setPage} />}
+            {page === 1 && (
+                <CreateAccount
+                    setPage={setPage}
+                    setEmail={setEmail}
+                    setPassword={setPassword}
+                    setName={setName}
+                    submitRegistration={submitRegistration}
+                    loading={loading}
+                    error={error}
+                />
+            )}
             {page === 2 && <OTPVerification setPage={setPage} />}
             {page === 3 && <UpdateProfile setPage={setPage} />}
         </main>
