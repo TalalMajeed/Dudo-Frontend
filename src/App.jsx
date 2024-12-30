@@ -12,6 +12,7 @@ import Register from "./pages/Register";
 import Error from "./pages/Error";
 import Panel from "./pages/Panel";
 import Kanban from "./pages/Kanban";
+import Calander from "./pages/Calander";
 
 import { ConfigProvider } from "antd";
 
@@ -35,6 +36,7 @@ function App() {
                     <Route path="/register" element={<Register />} />
                     <Route path="/panel" element={<Panel />} />
                     <Route path="/kanban" element={<Kanban />} />
+                    <Route path="/calander" element={<Calander />} />
                     <Route
                         path="*"
                         element={

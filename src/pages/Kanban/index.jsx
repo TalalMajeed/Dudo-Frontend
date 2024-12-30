@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import { DndProvider, useDrag, useDrop } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
-import { Card, Col, Row, Button, Modal, Form, Input, Select, DatePicker, Popconfirm, Tooltip, Avatar } from "antd";
-import { DeleteOutlined, UserOutlined } from "@ant-design/icons";
+import { Card, Col, Row, Button, Modal, Form, Input, Select, DatePicker, Popconfirm, Tooltip, Avatar, Divider } from "antd";
+import { DeleteOutlined, UserOutlined, CommentOutlined } from "@ant-design/icons";
 import "./styles.scss";
 
 const ItemType = {
@@ -39,7 +39,7 @@ const initialData = [
   },
 ];
 
-const DraggableTask = ({ task, moveTask, deleteTask }) => {
+const DraggableTask = ({ task, moveTask, deleteTask, addComment }) => {
   const [{ isDragging }, drag] = useDrag({
     type: ItemType.TASK,
     item: { task },
@@ -47,6 +47,15 @@ const DraggableTask = ({ task, moveTask, deleteTask }) => {
       isDragging: !!monitor.isDragging(),
     }),
   });
+
+  const [isCommentModalVisible, setIsCommentModalVisible] = useState(false);
+  const [commentForm] = Form.useForm();
+
+  const handleAddComment = (values) => {
+    addComment(task.title, values.comment);
+    setIsCommentModalVisible(false);
+    commentForm.resetFields();
+  };
 
   return (
     <div
@@ -60,38 +69,87 @@ const DraggableTask = ({ task, moveTask, deleteTask }) => {
       <Card
         title={task.title}
         extra={
-          <Popconfirm
-            title="Are you sure you want to delete this task?"
-            onConfirm={() => deleteTask(task.title)}
-            okText="Yes"
-            cancelText="No"
-          >
-            <Button
-              type="text"
-              icon={<DeleteOutlined />}
-              size="small"
-              danger
-            />
-          </Popconfirm>
+          <>
+            <Tooltip title="Add Comment">
+              <Button
+                type="text"
+                icon={<CommentOutlined />}
+                size="small"
+                onClick={() => setIsCommentModalVisible(true)}
+              />
+            </Tooltip>
+            <Popconfirm
+              title="Are you sure you want to delete this task?"
+              onConfirm={() => deleteTask(task.title)}
+              okText="Yes"
+              cancelText="No"
+            >
+              <Button
+                type="text"
+                icon={<DeleteOutlined />}
+                size="small"
+                danger
+              />
+            </Popconfirm>
+          </>
         }
         style={{ position: "relative" }}
       >
         <p>{task.description}</p>
         <div style={{ position: "absolute", bottom: 10, right: 10 }}>
-          <Tooltip title={`Assigned to: ${task.assignedTo}`}>
+          <Tooltip
+            title={
+              <>
+                <div>Assigned to: {task.assignedTo}</div>
+                <div>Deadline: {task.endTime}</div>
+              </>
+            }
+          >
             <Avatar
               size="small"
               icon={<UserOutlined />}
-              style={{ backgroundColor: "#87d068", cursor: "pointer" }}
+              style={{ backgroundColor: "#a48ff4", cursor: "pointer", marginBottom: "15px" }}
             />
           </Tooltip>
         </div>
+
+        {/* Display comments */}
+        <div>
+          {task.comments.map((comment, index) => (
+            <p key={index} style={{ fontSize: "12px", margin: "5px 0" }}>
+              <strong>Comment:</strong> {comment}
+            </p>
+          ))}
+        </div>
+
+        {/* Comment Modal */}
+        <Modal
+          title="Add Comment"
+          visible={isCommentModalVisible}
+          onCancel={() => setIsCommentModalVisible(false)}
+          footer={null}
+        >
+          <Form form={commentForm} onFinish={handleAddComment} layout="vertical">
+            <Form.Item
+              label="Comment"
+              name="comment"
+              rules={[{ required: true, message: "Please enter a comment" }]}
+            >
+              <Input.TextArea />
+            </Form.Item>
+            <Form.Item>
+              <Button type="primary" htmlType="submit">
+                Add Comment
+              </Button>
+            </Form.Item>
+          </Form>
+        </Modal>
       </Card>
     </div>
   );
 };
 
-const DroppableColumn = ({ status, tasks, moveTask, deleteTask }) => {
+const DroppableColumn = ({ status, tasks, moveTask, deleteTask, addComment, showCreateModal }) => {
   const [, drop] = useDrop({
     accept: ItemType.TASK,
     drop: (item) => moveTask(item.task, status),
@@ -100,13 +158,29 @@ const DroppableColumn = ({ status, tasks, moveTask, deleteTask }) => {
   return (
     <Col span={8}>
       <div ref={drop} className="kanban-column">
-        <h3>{status}</h3>
+        {/* Column Heading with Create Button */}
+        <div style={{ display: "flex", alignItems: "center", marginBottom: "8px" }}>
+          <Button
+            type="text"
+            icon={<span style={{ fontSize: "20px", fontWeight: "bold" }}>+</span>}
+            onClick={showCreateModal}
+            style={{
+              marginRight: "8px",
+              cursor: "pointer",
+              color: "#4caf50",
+              fontSize: "20px",
+            }}
+          />
+          <h3 className="column-title" style={{ margin: 0 }}>{status}</h3>
+        </div>
+        <Divider />
         {tasks.map((task) => (
           <DraggableTask
             key={task.title}
             task={task}
             moveTask={moveTask}
             deleteTask={deleteTask}
+            addComment={addComment}
           />
         ))}
       </div>
@@ -131,6 +205,14 @@ export default function Kanban() {
     setTasks((prevTasks) => prevTasks.filter((task) => task.title !== title));
   };
 
+  const addComment = (title, comment) => {
+    setTasks((prevTasks) =>
+      prevTasks.map((t) =>
+        t.title === title ? { ...t, comments: [...t.comments, comment] } : t
+      )
+    );
+  };
+
   const handleCreateTask = (values) => {
     const newTask = {
       ...values,
@@ -148,14 +230,6 @@ export default function Kanban() {
   return (
     <DndProvider backend={HTML5Backend}>
       <div className="kanban-board">
-        <Button
-          type="primary"
-          style={{ marginBottom: 20 }}
-          onClick={() => setIsModalVisible(true)}
-        >
-          Create Task
-        </Button>
-
         <Row gutter={16}>
           {columns.map((status) => (
             <DroppableColumn
@@ -164,17 +238,28 @@ export default function Kanban() {
               tasks={tasks.filter((task) => task.status === status)}
               moveTask={moveTask}
               deleteTask={deleteTask}
+              addComment={addComment}
+              showCreateModal={() => setIsModalVisible(true)}
             />
           ))}
         </Row>
 
         <Modal
-          title="Create New Task"
+          title={
+            <h2 style={{ textAlign: "center", fontSize: "24px", fontWeight: "600", margin: "0" }}>
+              Create New Task
+            </h2>
+          }
           visible={isModalVisible}
           onCancel={() => setIsModalVisible(false)}
           footer={null}
         >
-          <Form form={form} onFinish={handleCreateTask} layout="vertical">
+          <Form
+            form={form}
+            onFinish={handleCreateTask}
+            layout="vertical"
+            requiredMark="optional"
+          >
             <Form.Item
               label="Title"
               name="title"
@@ -182,6 +267,7 @@ export default function Kanban() {
             >
               <Input />
             </Form.Item>
+
             <Form.Item
               label="Description"
               name="description"
@@ -189,6 +275,7 @@ export default function Kanban() {
             >
               <Input.TextArea />
             </Form.Item>
+
             <Form.Item
               label="Status"
               name="status"
@@ -202,6 +289,7 @@ export default function Kanban() {
                 ))}
               </Select>
             </Form.Item>
+
             <Form.Item
               label="Assigned To"
               name="assignedTo"
@@ -209,23 +297,31 @@ export default function Kanban() {
             >
               <Input />
             </Form.Item>
-            <Form.Item
-              label="Assign Time"
-              name="assignTime"
-              rules={[{ required: true, message: "Please select a start time" }]}
-            >
-              <DatePicker showTime />
-            </Form.Item>
-            <Form.Item
-              label="End Time"
-              name="endTime"
-              rules={[{ required: true, message: "Please select an end time" }]}
-            >
-              <DatePicker showTime />
-            </Form.Item>
+
+            <Row gutter={16}>
+              <Col span={12}>
+                <Form.Item
+                  label="Assign Time"
+                  name="assignTime"
+                  rules={[{ required: true, message: "Please select a start time" }]}
+                >
+                  <DatePicker showTime style={{ width: "100%" }} />
+                </Form.Item>
+              </Col>
+              <Col span={12}>
+                <Form.Item
+                  label="End Time"
+                  name="endTime"
+                  rules={[{ required: true, message: "Please select an end time" }]}
+                >
+                  <DatePicker showTime style={{ width: "100%" }} />
+                </Form.Item>
+              </Col>
+            </Row>
+
             <Form.Item>
-              <Button type="primary" htmlType="submit">
-                Create
+              <Button type="primary" htmlType="submit" size="large" block>
+                Create Task
               </Button>
             </Form.Item>
           </Form>
