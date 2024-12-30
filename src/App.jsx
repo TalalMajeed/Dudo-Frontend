@@ -1,4 +1,3 @@
-import React from "react";
 import {
     BrowserRouter as Router,
     Routes,
@@ -13,6 +12,8 @@ import Error from "./pages/Error";
 import Panel from "./pages/Panel";
 import Kanban from "./pages/Kanban";
 import Calander from "./pages/Calander";
+import Chat from "./pages/Chat";
+
 
 import { ConfigProvider } from "antd";
 
@@ -37,6 +38,7 @@ function App() {
                     <Route path="/panel" element={<Panel />} />
                     <Route path="/kanban" element={<Kanban />} />
                     <Route path="/calander" element={<Calander />} />
+                    <Route path="/chat" element={<Chat />} />
                     <Route
                         path="*"
                         element={
@@ -53,3 +55,7 @@ function App() {
 }
 
 export default App;
+export const useUser = () => {
+    return useContext(UserContext);
+};
+

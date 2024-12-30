@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Calendar as BigCalendar, momentLocalizer } from "react-big-calendar";
 import moment from "moment";
 import "react-big-calendar/lib/css/react-big-calendar.css";
@@ -7,15 +7,35 @@ import { Modal, Button, Form, Input, DatePicker, Popconfirm, Row, Col, Card, Typ
 const { Title, Text } = Typography;
 const localizer = momentLocalizer(moment);
 
-export default function MeetingCalendar() {
+export default function MeetingCalendar({ initialData }) {
   const [events, setEvents] = useState([]);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [selectedEvent, setSelectedEvent] = useState(null);
   const [form] = Form.useForm();
 
+  // Transform incoming data into events format
+  useEffect(() => {
+    if (initialData && Array.isArray(initialData)) {
+      const transformedEvents = initialData.map((item) => ({
+        ...item,
+        title: item.description, // Use description as title for the calendar event
+        start: new Date(item.assignTime * 1000), // Convert timestamp to Date
+        end: new Date(item.endTime * 1000), // Convert timestamp to Date
+        allDay: false,
+      }));
+      setEvents(transformedEvents);
+    }
+  }, [initialData]);
+
   const handleAddMeeting = (values) => {
     const newEvent = {
       title: values.title,
+      description: values.description,
+      status: "In Progress",
+      assignedTo: values.assignedTo,
+      assignTime: values.startTime.valueOf() / 1000, // Convert to seconds timestamp
+      endTime: values.endTime.valueOf() / 1000, // Convert to seconds timestamp
+      comments: [],
       start: new Date(values.startTime),
       end: new Date(values.endTime),
       allDay: false,
@@ -100,7 +120,7 @@ export default function MeetingCalendar() {
       {/* Add Meeting Modal */}
       <Modal
         title={<Title level={3} style={{ textAlign: "center" }}>Add Meeting</Title>}
-        visible={isModalVisible}
+        open={isModalVisible}
         onCancel={() => setIsModalVisible(false)}
         footer={null}
       >
@@ -112,6 +132,20 @@ export default function MeetingCalendar() {
               rules={[{ required: true, message: "Please enter a title" }]}
             >
               <Input placeholder="Enter meeting title" />
+            </Form.Item>
+            <Form.Item
+              label="Description"
+              name="description"
+              rules={[{ required: true, message: "Please enter a description" }]}
+            >
+              <Input placeholder="Enter meeting description" />
+            </Form.Item>
+            <Form.Item
+              label="Assigned To"
+              name="assignedTo"
+              rules={[{ required: true, message: "Please enter the assignee's name" }]}
+            >
+              <Input placeholder="Enter assignee's name" />
             </Form.Item>
             <Row gutter={16}>
               <Col span={12}>
@@ -150,8 +184,8 @@ export default function MeetingCalendar() {
       {/* Delete Meeting Confirmation */}
       {selectedEvent && (
         <Modal
-          title={<Title level={3}>Delete Meeting</Title>}
-          visible={!!selectedEvent}
+          title={<Title level={3}>Meeting Details</Title>}
+          open={!!selectedEvent}
           onCancel={() => setSelectedEvent(null)}
           footer={[
             <Popconfirm
@@ -167,9 +201,17 @@ export default function MeetingCalendar() {
             <Button onClick={() => setSelectedEvent(null)}>Cancel</Button>,
           ]}
         >
-          <Text>Meeting: {selectedEvent.title}</Text>
-          <p>Start Time: {moment(selectedEvent.start).format("YYYY-MM-DD HH:mm")}</p>
-          <p>End Time: {moment(selectedEvent.end).format("YYYY-MM-DD HH:mm")}</p>
+          <Text strong>Title:</Text> {selectedEvent.title}
+          <br />
+          <Text strong>Description:</Text> {selectedEvent.description}
+          <br />
+          <Text strong>Status:</Text> {selectedEvent.status}
+          <br />
+          <Text strong>Assigned To:</Text> {selectedEvent.assignedTo}
+          <br />
+          <Text strong>Assign Time:</Text> {moment(selectedEvent.assignTime * 1000).format("YYYY-MM-DD HH:mm")}
+          <br />
+          <Text strong>End Time:</Text> {moment(selectedEvent.endTime * 1000).format("YYYY-MM-DD HH:mm")}
         </Modal>
       )}
     </div>
