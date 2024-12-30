@@ -11,6 +11,7 @@ import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Error from "./pages/Error";
 import Panel from "./pages/Panel";
+import Kanban from "./pages/Kanban";
 
 import { ConfigProvider } from "antd";
 
@@ -33,6 +34,7 @@ function App() {
                     <Route path="/login" element={<Login />} />
                     <Route path="/register" element={<Register />} />
                     <Route path="/panel" element={<Panel />} />
+                    <Route path="/kanban" element={<Kanban />} />
                     <Route
                         path="*"
                         element={
