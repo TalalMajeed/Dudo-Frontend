@@ -7,8 +7,8 @@ import { API } from "../../utils/constants";
 import { useUser } from "../../App";
 
 export default function Index() {
-    const [username, setUsername] = useState("talal-majeed-11935");
-    const [password, setPassword] = useState("123");
+    const [username, setUsername] = useState("muhammad-talal-majeed-30757");
+    const [password, setPassword] = useState("1234");
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState("");
     const navigate = useNavigate();
