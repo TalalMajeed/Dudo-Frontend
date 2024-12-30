@@ -3,15 +3,21 @@ import { Button, Select, Radio, Input } from "antd";
 import { TeamOutlined, SettingOutlined, UserOutlined } from "@ant-design/icons";
 import { useNavigate } from "react-router-dom";
 import React, { useEffect } from "react";
-import { Alert } from "antd";
-import { MailOutlined, LockOutlined } from "@ant-design/icons";
-import { PlusOutlined } from "@ant-design/icons";
-import { Upload } from "antd";
+import { Alert, Upload } from "antd";
+import { MailOutlined, LockOutlined, PlusOutlined } from "@ant-design/icons";
 const { TextArea } = Input;
 import { API } from "../../utils/constants";
+import { useUser } from "../../App";
 
-function TeamInfo(props) {
-    const navigate = useNavigate();
+function TeamInfo({
+    teamName,
+    setTeamName,
+    size,
+    setSize,
+    teamIndustry,
+    setTeamIndustry,
+    setPage,
+}) {
     return (
         <form className="bg-white p-10 rounded-lg shadow-lg w-[480px] max-w-[480px]">
             <h1 className="text-4xl font-bold">Team Info.</h1>
@@ -30,13 +36,14 @@ function TeamInfo(props) {
                 prefix={<TeamOutlined className="mr-2 text-[#999999]" />}
                 className="w-[100%] h-[50px] text-base mb-5"
                 placeholder="Enter Team Name"
-                onChange={(e) => props.setTeamName(e.target.value)}
+                value={teamName}
+                onChange={(e) => setTeamName(e.target.value)}
             />
             <p className="text-base mb-5">Select Team Size</p>
             <Radio.Group
                 className="h-[50px] w-[100%] mb-5"
-                value={props.size}
-                onChange={(e) => props.setSize(e.target.value)}
+                value={size}
+                onChange={(e) => setSize(e.target.value)}
             >
                 <Radio.Button
                     className="text-center text-base leading-[45px] h-[50px] w-[33.3%]"
@@ -61,10 +68,8 @@ function TeamInfo(props) {
             <Select
                 className="w-[100%] h-[50px] text-base mb-5"
                 placeholder="Select Industry"
-                prefix={
-                    <SettingOutlined className="mr-2 mt-[6px] text-[#999999]" />
-                }
-                onChange={(value) => props.setTeamIndustry(value)}
+                value={teamIndustry}
+                onChange={(value) => setTeamIndustry(value)}
             >
                 <Select.Option value="technology">Technology</Select.Option>
                 <Select.Option value="finance">Finance</Select.Option>
@@ -78,7 +83,7 @@ function TeamInfo(props) {
             <Button
                 type="primary"
                 className="w-[100%] h-[45px] text-base mt-8 mb-5"
-                onClick={() => props.setPage(1)}
+                onClick={() => setPage(1)}
             >
                 Continue
             </Button>
@@ -86,12 +91,22 @@ function TeamInfo(props) {
     );
 }
 
-function CreateAccount(props) {
+function CreateAccount({
+    setPage,
+    setName,
+    email,
+    setEmail,
+    password,
+    setPassword,
+    submitRegistration,
+    loading,
+    error,
+}) {
     const [name1, setName1] = React.useState("");
     const [name2, setName2] = React.useState("");
 
     useEffect(() => {
-        props.setName(`${name1} ${name2}`);
+        setName(`${name1} ${name2}`);
     }, [name1, name2]);
 
     return (
@@ -102,7 +117,7 @@ function CreateAccount(props) {
                 <Button
                     type="link"
                     className="text-base p-1"
-                    onClick={() => navigate("/login")}
+                    onClick={() => setPage(0)}
                 >
                     Login
                 </Button>
@@ -114,6 +129,7 @@ function CreateAccount(props) {
                     className="w-[100%] h-[50px] text-base mt-2 mb-5"
                     placeholder="First Name"
                     onChange={(e) => setName1(e.target.value)}
+                    value={name1}
                 />
                 <Input
                     size="large"
@@ -121,6 +137,7 @@ function CreateAccount(props) {
                     className="w-[100%] h-[50px] text-base mt-2 mb-5"
                     placeholder="Last Name"
                     onChange={(e) => setName2(e.target.value)}
+                    value={name2}
                 />
             </div>
             <Input
@@ -128,19 +145,21 @@ function CreateAccount(props) {
                 prefix={<MailOutlined className="mr-2 text-[#999999]" />}
                 className="w-[100%] h-[50px] text-base mb-5"
                 placeholder="Email"
-                onChange={(e) => props.setEmail(e.target.value)}
+                onChange={(e) => setEmail(e.target.value)}
+                value={email}
             />
             <Input
                 size="large"
                 prefix={<LockOutlined className="mr-2 text-[#999999]" />}
                 className="w-[100%] h-[50px] text-base mb-8"
                 placeholder="Password"
-                onChange={(e) => props.setPassword(e.target.value)}
+                onChange={(e) => setPassword(e.target.value)}
+                value={password}
             />
             <hr />
             <Button
-                onClick={props.submitRegistration}
-                loading={props.loading}
+                onClick={submitRegistration}
+                loading={loading}
                 type="primary"
                 className="w-[100%] h-[45px] text-base mt-8 mb-5"
             >
@@ -148,13 +167,13 @@ function CreateAccount(props) {
             </Button>
             <Button
                 className="w-[100%] h-[45px] text-base mb-5"
-                onClick={() => props.setPage(0)}
+                onClick={() => setPage(0)}
             >
                 Go Back
             </Button>
             <Alert
-                style={{ display: props.error ? "block" : "none" }}
-                message={props.error}
+                style={{ display: error ? "block" : "none" }}
+                message={error}
                 type="error"
                 className="text-base text-red-500 text-center w-[100%] h-[45px] mb-5"
             />
@@ -162,33 +181,39 @@ function CreateAccount(props) {
     );
 }
 
-function OTPVerification(props) {
+function OTPVerification({ otp, setOTP, submitOTP, resendOTP, error, email }) {
     return (
         <form className="bg-white p-10 rounded-lg shadow-lg max-w-[480px] flex flex-col items-center">
             <h1 className="text-4xl font-bold">Verify your account.</h1>
             <p className="text-base mt-10 mb-10 text-center">
-                Hey User, Thank you for choosing Dudo. Use the following OTP to
-                complete your registration!
+                Hey User, thank you for choosing Dudo. Use the following OTP to
+                complete your registration for {email}.
             </p>
-            <Input.OTP
+            <Input
                 size="large"
-                className="w-[100%] h-[0px] text-base"
-                id="otp"
+                className="w-[100%] h-[50px] text-base"
                 placeholder="Enter OTP"
+                onChange={(e) => setOTP(e.target.value)}
+                value={otp}
             />
             <hr />
             <Button
                 type="primary"
                 className="w-[100%] h-[45px] text-base mt-8 mb-5"
+                onClick={submitOTP}
             >
                 Verify Account
             </Button>
-            <Button className="w-[100%] h-[45px] text-base mb-5">
+            <Button
+                className="w-[100%] h-[45px] text-base mb-5"
+                onClick={resendOTP}
+            >
                 Resend OTP
             </Button>
             <Alert
-                message="Incorrect OTP"
+                message={error || ""}
                 type="error"
+                style={{ display: error ? "block" : "none" }}
                 className="text-base text-red-500 text-center w-[100%] h-[45px] mb-5"
             />
         </form>
@@ -198,6 +223,11 @@ function OTPVerification(props) {
 function UpdateProfile(props) {
     const [fileList, setFileList] = React.useState([]);
     const [uploadedImage, setUploadedImage] = React.useState(null);
+    const [previewImage, setPreviewImage] = React.useState("");
+
+    useEffect(() => {
+        props.setImage(uploadedImage);
+    }, [uploadedImage]);
 
     const getBase64 = (file) =>
         new Promise((resolve, reject) => {
@@ -273,43 +303,144 @@ function UpdateProfile(props) {
                 rows={4}
                 className="w-[100%] h-[20px] text-base mt-2 mb-5"
                 placeholder="Write a Short Description about your Team"
+                value={props.description}
+                onChange={(e) => props.setDescription(e.target.value)}
             />
             <Button
                 type="primary"
                 className="w-[100%] h-[45px] text-base mt-2 mb-5"
-                onClick={() =>
-                    console.log("Uploaded Image Base64:", uploadedImage)
-                }
+                onClick={props.updateTeamInfo}
             >
                 Save & Continue
             </Button>
             <Button
                 className="w-[100%] h-[45px] text-base mb-5"
-                onClick={() =>
-                    console.log("Uploaded Image Base64:", uploadedImage)
-                }
+                onClick={props.completedRegistration}
             >
                 Will Setup Later!
             </Button>
         </form>
     );
 }
+
 export default function Index() {
     const [teamName, setTeamName] = React.useState("");
-    const [teamSize, setTeamSize] = React.useState("1");
-    const [teamIndustry, setTeamIndustry] = React.useState("");
+    const [teamSize, setTeamSize] = React.useState("");
+    const [teamIndustry, setTeamIndustry] = React.useState("technology");
     const [name, setName] = React.useState("");
     const [email, setEmail] = React.useState("");
     const [password, setPassword] = React.useState("");
+    const [otp, setOTP] = React.useState("");
     const [loading, setLoading] = React.useState(false);
     const [error, setError] = React.useState("");
+    const [page, setPage] = React.useState(0);
+    const [image, setImage] = React.useState("");
+    const [description, setDescription] = React.useState("");
+    const { user, setUser } = useUser();
+    const [teamID, setTeamID] = React.useState("");
+
+    const resendOTP = async () => {
+        setLoading(true);
+        setError("");
+        try {
+            console.log(JSON.stringify({ email }));
+            const response = await fetch(API + "/api/register/new/otp", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({ email }),
+            });
+        } catch (error) {
+            console.error(error);
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    const updateTeamInfo = async () => {
+        setLoading(true);
+        setError("");
+        try {
+            console.log("Updating Team Info");
+            if (description === "" || !image) {
+                setError("Please fill in all the fields.");
+                return;
+            }
+
+            console.log(JSON.stringify({ description, image, teamID }));
+
+            const response = await fetch(API + "/api/register/add/details", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    teamDescription: description,
+                    teamImage: image,
+                    teamID,
+                }),
+            });
+
+            const data = await response.json();
+            console.log(data);
+
+            if (!response.ok || response.status !== 200) {
+                throw new Error(data.error || "Team info update failed");
+            }
+
+            console.log("Team Info Update Successful:", data);
+            navigate("/panel");
+        } catch (error) {
+            console.error(error);
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    const submitOTP = async () => {
+        setLoading(true);
+        setError("");
+        try {
+            console.log("Submitting OTP");
+            if (otp === "") {
+                setError("Please fill in the OTP.");
+                return;
+            }
+
+            console.log(JSON.stringify({ otp }));
+
+            const response = await fetch(API + "/api/register/complete", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({ otp, email }),
+            });
+
+            const data = await response.json();
+            console.log(data);
+
+            if (!response.ok || response.status !== 200) {
+                throw new Error(data.error || "OTP verification failed");
+            }
+            console.log("OTP Verification Successful:", data);
+            setUser(data);
+            setTeamID(data.teamID);
+            setPage(3);
+        } catch (error) {
+            console.error(error);
+            setError("Invalid OTP. Please try again.");
+        } finally {
+            setLoading(false);
+        }
+    };
 
     const submitRegistration = async () => {
         setLoading(true);
         setError("");
         try {
             console.log("Submitting Registration");
-            //If any of the information is missing, show an error
             if (
                 teamName === "" ||
                 teamSize === "" ||
@@ -359,6 +490,12 @@ export default function Index() {
             });
             const data = await response.json();
             console.log(data);
+
+            if (!response.ok || response.status !== 200) {
+                throw new Error(data.error || "Registration failed");
+            }
+            console.log("Registration Successful:", data);
+            setPage(2);
         } catch (error) {
             console.error(error);
         } finally {
@@ -366,7 +503,12 @@ export default function Index() {
         }
     };
 
-    const [page, setPage] = React.useState(0);
+    const navigate = useNavigate();
+
+    const completedRegistration = () => {
+        navigate("/panel");
+    };
+
     return (
         <main
             id="register"
@@ -374,26 +516,50 @@ export default function Index() {
         >
             {page === 0 && (
                 <TeamInfo
+                    teamName={teamName}
+                    setTeamName={setTeamName}
                     size={teamSize}
                     setSize={setTeamSize}
-                    setPage={setPage}
-                    setTeamName={setTeamName}
+                    teamIndustry={teamIndustry}
                     setTeamIndustry={setTeamIndustry}
+                    setPage={setPage}
                 />
             )}
             {page === 1 && (
                 <CreateAccount
                     setPage={setPage}
-                    setEmail={setEmail}
-                    setPassword={setPassword}
+                    name={name}
                     setName={setName}
+                    email={email}
+                    setEmail={setEmail}
+                    password={password}
+                    setPassword={setPassword}
                     submitRegistration={submitRegistration}
                     loading={loading}
                     error={error}
                 />
             )}
-            {page === 2 && <OTPVerification setPage={setPage} />}
-            {page === 3 && <UpdateProfile setPage={setPage} />}
+            {page === 2 && (
+                <OTPVerification
+                    otp={otp}
+                    setOTP={setOTP}
+                    submitOTP={submitOTP}
+                    resendOTP={resendOTP}
+                    error={error}
+                    email={email}
+                />
+            )}
+            {page === 3 && (
+                <UpdateProfile
+                    setPage={setPage}
+                    image={image}
+                    setImage={setImage}
+                    description={description}
+                    setDescription={setDescription}
+                    updateTeamInfo={updateTeamInfo}
+                    completedRegistration={completedRegistration}
+                />
+            )}
         </main>
     );
 }

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { createContext, useState, useContext } from "react";
 import {
     BrowserRouter as Router,
     Routes,
@@ -14,7 +14,11 @@ import Panel from "./pages/Panel";
 
 import { ConfigProvider } from "antd";
 
+const UserContext = createContext();
+
 function App() {
+    const [user, setUser] = useState(null);
+
     return (
         <ConfigProvider
             theme={{
@@ -23,29 +27,35 @@ function App() {
                 },
             }}
         >
-            <Router>
-                <Routes>
-                    <Route
-                        path="/"
-                        element={<Navigate to="/welcome" replace />}
-                    />
-                    <Route path="/welcome" element={<Welcome />} />
-                    <Route path="/login" element={<Login />} />
-                    <Route path="/register" element={<Register />} />
-                    <Route path="/panel" element={<Panel />} />
-                    <Route
-                        path="*"
-                        element={
-                            <Error
-                                error="404"
-                                description="The Requested Resource was not found :("
-                            />
-                        }
-                    />
-                </Routes>
-            </Router>
+            <UserContext.Provider value={{ user, setUser }}>
+                <Router>
+                    <Routes>
+                        <Route
+                            path="/"
+                            element={<Navigate to="/welcome" replace />}
+                        />
+                        <Route path="/welcome" element={<Welcome />} />
+                        <Route path="/login" element={<Login />} />
+                        <Route path="/register" element={<Register />} />
+                        <Route path="/panel" element={<Panel />} />
+                        <Route
+                            path="*"
+                            element={
+                                <Error
+                                    error="404"
+                                    description="The Requested Resource was not found :("
+                                />
+                            }
+                        />
+                    </Routes>
+                </Router>
+            </UserContext.Provider>
         </ConfigProvider>
     );
 }
 
 export default App;
+
+export const useUser = () => {
+    return useContext(UserContext);
+};
