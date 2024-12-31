@@ -13,14 +13,13 @@ export default function MeetingCalendar({ initialData }) {
   const [selectedEvent, setSelectedEvent] = useState(null);
   const [form] = Form.useForm();
 
-  // Transform incoming data into events format
   useEffect(() => {
     if (initialData && Array.isArray(initialData)) {
       const transformedEvents = initialData.map((item) => ({
         ...item,
-        title: item.description, // Use description as title for the calendar event
-        start: new Date(item.assignTime * 1000), // Convert timestamp to Date
-        end: new Date(item.endTime * 1000), // Convert timestamp to Date
+        title: item.description, 
+        start: new Date(item.assignTime * 1000),
+        end: new Date(item.endTime * 1000),
         allDay: false,
       }));
       setEvents(transformedEvents);
@@ -117,13 +116,13 @@ export default function MeetingCalendar({ initialData }) {
         />
       </Card>
 
-      {/* Add Meeting Modal */}
       <Modal
         title={<Title level={3} style={{ textAlign: "center" }}>Add Meeting</Title>}
         open={isModalVisible}
         onCancel={() => setIsModalVisible(false)}
         footer={null}
       >
+
         <div style={{ maxWidth: "400px", margin: "0 auto" }}>
           <Form form={form} onFinish={handleAddMeeting} layout="vertical">
             <Form.Item
