@@ -142,7 +142,7 @@ export default function MeetingCalendar({ initialData }) {
             <Form.Item
               label="Assigned To"
               name="assignedTo"
-              rules={[{ required: true, message: "Please enter the assignee's name" }]}
+              rules={[{ required: true, message: "Please enter the assignees name" }]}
             >
               <Input placeholder="Enter assignee's name" />
             </Form.Item>
